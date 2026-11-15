@@ -132,7 +132,8 @@ comments) and `docs/playtest/playtest_chart.png`.
 
 ```
 index.html            the game (open this)
-css/style.css         layout, colour tokens (light + dark), animations
+css/style.css         layout, components, animations
+css/theme.css         the "Navapuram at dusk" look: night sky, signboard headings, treasury coins
 js/rng.js             seeded random numbers, Poisson from a given uniform
 js/stats.js           mean, sd, Pearson r, Welch CI, event study
 js/scm/common.js      rejection sampling, common-random-numbers evaluation, scoring, pilots

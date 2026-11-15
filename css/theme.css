@@ -1,0 +1,197 @@
+/* theme.css - "Navapuram at dusk": the game's own look.
+ * A night sky over an Indian town with a silhouette skyline, headings painted like a shop
+ * signboard (bold sans in saffron, underlined with a row of kolam dots), a treasury of rupee
+ * coins, a ruler-style correlation gauge, rubber-stamped policy costs and a "route map" of the
+ * term. Each concept takes a colour from its story: confounding = monsoon blue (dengue season),
+ * reverse = clinic pink, simpson = chalkboard green (schools), rct = signal violet (roads).
+ * Loaded after style.css; :root:root:root outranks the earlier light/dark token blocks, so the
+ * game always uses this one palette. */
+
+:root:root:root {
+  color-scheme: dark;
+  --bg: #0b1226;
+  --surface: #141c33;
+  --surface-2: #1c2541;
+  --border: #33405f;
+  --text: #f5eedc;
+  --text-2: #cdc6b2;
+  --muted: #9097ab;
+  --accent: #f4a63a;          /* saffron */
+  --accent-ink: #231303;
+  --saffron: #f4a63a;
+  --marigold: #ffc94a;
+  --grid: #26304d;
+  --s1: #5aa2ff; --s2: #ff7a45; --s3: #2fd09a; --s4: #f2b11c; --s5: #f07aaa; --s6: #3cc35a; --s7: #a99bff;
+  --good: #2fd09a; --good-ink: #7ff0c2; --bad: #ff6b6b; --warn-bg: #3b2a10;
+  --lv: var(--saffron);
+  --sign: "Nirmala UI", "Segoe UI", "Noto Sans", "Helvetica Neue", Arial, sans-serif;
+  /* the living town by night: lit windows, darker greens */
+  --t-grass: #2f4f37; --t-grass-edge: #4d7653; --t-road: #262a38; --t-river: #1c3f6e; --t-bridge: #7a6448;
+  --t-wall: #e9dcc2; --t-door: #6b4636; --t-win: #ffcf5a; --t-trunk: #6b4636; --t-leaf: #3f8f55;
+  --t-sign: rgba(10,14,28,0.85); --t-sign-ink: #f5eedc; --t-mosq: #0d0a14; --t-lane: #6f6a5a;
+}
+body[data-concept="confounding"] { --lv: #5aa9ff; }
+body[data-concept="reverse"] { --lv: #ff86b3; }
+body[data-concept="simpson"] { --lv: #8fd18b; }
+body[data-concept="rct"] { --lv: #a99bff; }
+
+/* ---------------------------------------------------------------- the sky */
+html { background: #0b1226; }
+body {
+  font-family: var(--sign);
+  color: var(--text);
+  background:
+    radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,0.7), transparent 60%),
+    radial-gradient(1px 1px at 27% 8%, rgba(255,255,255,0.5), transparent 60%),
+    radial-gradient(1.5px 1.5px at 44% 22%, rgba(255,255,255,0.6), transparent 60%),
+    radial-gradient(1px 1px at 63% 12%, rgba(255,255,255,0.55), transparent 60%),
+    radial-gradient(1px 1px at 78% 26%, rgba(255,255,255,0.5), transparent 60%),
+    radial-gradient(1.5px 1.5px at 90% 9%, rgba(255,255,255,0.65), transparent 60%),
+    radial-gradient(1px 1px at 6% 40%, rgba(255,255,255,0.4), transparent 60%),
+    radial-gradient(1px 1px at 55% 38%, rgba(255,255,255,0.35), transparent 60%),
+    radial-gradient(1200px 520px at 50% 108%, rgba(244,166,58,0.30), transparent 65%),
+    radial-gradient(900px 500px at 85% 100%, rgba(200,70,110,0.20), transparent 65%),
+    linear-gradient(180deg, #070c1d 0%, #0d1631 40%, #1a1d3e 75%, #2b2140 100%);
+  background-attachment: fixed;
+}
+.skyline { position: fixed; left: 0; right: 0; bottom: 0; height: 210px; z-index: 0; pointer-events: none; opacity: 0.9; }
+.skyline svg { width: 100%; height: 100%; display: block; }
+.skyline .far { fill: #141a36; }
+.skyline .near { fill: #0a0e20; }
+.skyline .lit { fill: #ffcf5a; opacity: 0.85; animation: twinkle 6s ease-in-out infinite; }
+.skyline .lit:nth-child(3n) { animation-delay: -2s; }
+.skyline .lit:nth-child(4n) { animation-delay: -4s; opacity: 0.6; }
+@keyframes twinkle { 0%, 100% { opacity: 0.85; } 50% { opacity: 0.45; } }
+.moon { position: fixed; top: 74px; right: 7%; width: 56px; height: 56px; border-radius: 50%; z-index: 0; pointer-events: none;
+  background: radial-gradient(circle at 38% 38%, #fff8e1, #f3e3b0 60%, #d9c486); opacity: 0.85; }
+@media (max-width: 1250px) { .moon { display: none; } }
+main, .topbar { position: relative; z-index: 1; }
+main { padding-bottom: 120px; }
+
+/* ---------------------------------------------------------------- type: painted signboard headings */
+h1, h2, h3, .brand { font-family: var(--sign); }
+h1 { font-weight: 800; font-size: 2rem; letter-spacing: 0; color: var(--saffron); line-height: 1.15; }
+h1::after { /* a row of kolam dots under every heading */
+  content: ''; display: block; height: 6px; width: 150px; margin-top: 10px;
+  background: radial-gradient(circle, var(--lv) 2px, transparent 2.5px) 0 50% / 12px 6px repeat-x;
+}
+.hero h1 { font-size: 3.1rem; color: var(--marigold); }
+.hero h1::after { width: 260px; background-image: radial-gradient(circle, var(--saffron) 2.5px, transparent 3px); background-size: 14px 6px; }
+@media (max-width: 720px) { h1 { font-size: 1.55rem; } .hero h1 { font-size: 2.2rem; } }
+h2 { font-weight: 800; font-size: 1.2rem; color: var(--marigold); }
+h3 { color: var(--text); }
+.eyebrow { text-transform: none; letter-spacing: 0.01em; font-size: 0.85rem; font-weight: 700; color: var(--lv); }
+.lead { color: var(--text-2); font-size: 1.12rem; }
+b, strong { color: #fff4d6; }
+a { color: var(--marigold); }
+
+/* ---------------------------------------------------------------- top bar with the municipal seal */
+.topbar { background: rgba(6,10,24,0.92); border-bottom: 2px solid var(--saffron); box-shadow: 0 6px 20px rgba(0,0,0,0.45); }
+.brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.25rem; color: var(--marigold) !important; }
+.seal { width: 34px; height: 34px; flex: 0 0 34px; }
+.topbar-info span { font-size: 0.85rem; padding: 3px 10px; border-radius: 6px; background: rgba(255,255,255,0.06); }
+.topbar-info b { color: var(--marigold); font-variant-numeric: tabular-nums; }
+
+/* ---------------------------------------------------------------- panels */
+.card { background: rgba(20,28,51,0.94); border: 1px solid var(--border); border-radius: 14px; box-shadow: 0 10px 28px rgba(0,0,0,0.4); }
+.card:has(> h1) { border-top: 3px solid var(--lv); }
+.hero { background: linear-gradient(180deg, rgba(28,37,65,0.96), rgba(16,22,42,0.96)); border-top: 3px solid var(--saffron); }
+
+/* ---------------------------------------------------------------- controls */
+.btn { border-radius: 10px; border: 1px solid var(--border); background: var(--surface-2); color: var(--text); font-family: var(--sign); }
+.btn:hover { border-color: var(--saffron); }
+.btn.primary { background: var(--saffron); color: var(--accent-ink); border-color: var(--saffron); font-weight: 800; box-shadow: 0 4px 0 #b06b17; }
+.btn.primary:hover { filter: brightness(1.06); transform: translateY(-1px); box-shadow: 0 5px 0 #b06b17; }
+.btn.primary:active { transform: translateY(2px); box-shadow: 0 2px 0 #b06b17; }
+.tab { border-radius: 10px 10px 0 0; border: 1px solid var(--border); border-bottom: 0; background: var(--surface); color: var(--text-2); font-family: var(--sign); }
+.tab:hover { color: var(--text); }
+.tab.active { background: var(--surface-2); color: var(--saffron); border-color: var(--saffron); box-shadow: inset 0 3px 0 var(--saffron); }
+.tabs { gap: 4px; margin-bottom: 0; border-bottom: 2px solid var(--saffron); }
+.tabs + #panel { border-top-left-radius: 0; }
+input:not([type]), input[type=text], select, textarea { background: #0e152b; border-color: var(--border); color: var(--text); font-family: var(--sign); }
+select option { background: #141c33; color: var(--text); }
+input[type=range] { accent-color: var(--saffron); }
+
+/* ---------------------------------------------------------------- the term route map (level path) */
+.path .step::before { background: #3a4466; }
+.path .step.done::before, .path .step.current::before { background: var(--saffron); }
+.path .dot { background: #0e152b; border-color: #3a4466; color: var(--text-2); }
+.path .done .dot { background: var(--saffron); border-color: var(--saffron); color: var(--accent-ink); }
+.path .current .dot { border-color: var(--marigold); color: var(--marigold); }
+.path .current .step-name { color: var(--marigold); }
+.path .step-name { color: var(--muted); }
+
+/* ---------------------------------------------------------------- numbers */
+.stat { background: #0e152b; border: 1px solid var(--border); border-radius: 12px; }
+.stat-num { color: var(--marigold); font-variant-numeric: tabular-nums; font-weight: 800; }
+.stat-lbl { color: var(--text-2); }
+.r-big b { color: var(--marigold); font-size: 1.8rem; font-variant-numeric: tabular-nums; }
+.counter, .week-label { font-variant-numeric: tabular-nums; }
+.hud-item { background: rgba(6,10,24,0.7); border-color: var(--border); }
+.hud-item b { color: var(--marigold); }
+
+/* correlation ruler: -1 .. +1 with a pointer, filled from 0 to r */
+.ruler { position: relative; max-width: 520px; height: 34px; margin: 4px 0 2px; }
+.ruler-track { position: absolute; left: 0; right: 0; top: 14px; height: 10px; border-radius: 3px; background: #0e152b; border: 1px solid var(--border); }
+.ruler-fill { position: absolute; top: 14px; height: 10px; background: var(--saffron); border-radius: 2px; transition: all 0.6s ease; }
+.ruler-fill.neg { background: var(--s5); }
+.ruler-ticks { position: absolute; left: 0; right: 0; top: 24px; height: 7px;
+  background: linear-gradient(90deg, var(--muted) 1px, transparent 1px) 0 0 / 25% 100% repeat-x; }
+.ruler-zero { position: absolute; left: 50%; top: 10px; width: 2px; height: 20px; background: var(--text-2); }
+.ruler-pointer { position: absolute; top: 0; width: 0; height: 0; margin-left: -7px; border-left: 7px solid transparent; border-right: 7px solid transparent;
+  border-top: 11px solid var(--marigold); transition: left 0.6s ease; }
+.ruler-scale { position: relative; max-width: 520px; height: 18px; font-size: 0.75rem; color: var(--muted); margin-bottom: 8px; }
+.ruler-scale span { position: absolute; top: 0; transform: translateX(-50%); white-space: nowrap; }
+.ruler-scale span:first-child { transform: none; }
+.ruler-scale span:last-child { transform: translateX(-100%); }
+
+/* the town treasury: one coin per Rs 5 lakh, spent coins greyed out */
+.treasury { margin: 8px 0 2px; }
+.treasury-lbl { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; font-size: 0.95rem; margin-bottom: 6px; }
+.treasury-lbl b { color: var(--marigold); font-variant-numeric: tabular-nums; }
+.coins { display: flex; flex-wrap: wrap; gap: 5px; }
+.tcoin { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-size: 0.7rem; font-weight: 800;
+  background: radial-gradient(circle at 35% 30%, #ffe7a0, #f0b43c 55%, #b9791c); color: #6b3f05; border: 1px solid #8a5a14; }
+.tcoin.spent { background: #1f2846; color: #48557a; border-color: #33405f; }
+
+/* ---------------------------------------------------------------- policy desk: sanctioned orders */
+.policy { background: rgba(28,37,65,0.94); }
+.policy:hover { border-color: var(--lv); }
+.policy.selected { border-color: var(--saffron); box-shadow: 0 0 0 2px var(--saffron); }
+.p-head { align-items: flex-start; }
+.cost { font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;
+  color: #ff8a7a; border: 2px dashed #ff8a7a; border-radius: 6px; padding: 3px 8px; transform: rotate(-4deg); background: rgba(255,106,92,0.08); }
+
+/* ---------------------------------------------------------------- the rest */
+.bubble { background: #0e152b; border-color: var(--border); }
+.bubble::before { background: #0e152b; border-color: var(--border); }
+.bubble .who { color: var(--saffron); text-transform: none; letter-spacing: 0; font-size: 0.82rem; }
+.avatar-bg { fill: #2c3a66; }
+.callout { background: #0e152b; border-left-color: var(--lv); }
+.callout.warn { background: rgba(242,177,28,0.12); }
+th { background: #0e152b; color: var(--marigold); }
+.table-wrap { border-color: var(--border); }
+tr.mine td { background: rgba(244,166,58,0.14); }
+.tooltip { background: #0c1328; border-color: var(--saffron); }
+.chip { background: var(--saffron); color: var(--accent-ink); }
+.meter { background: #0e152b; border-color: var(--border); }
+.meter-fill { background: linear-gradient(90deg, #2fd09a, #f4a63a); }
+.stars .star.on { color: #ffcf3a; }
+.badge { background: #0e152b; border-color: var(--border); }
+.badge.got { border-color: var(--saffron); background: rgba(244,166,58,0.1); }
+.town-wrap { border: 2px solid #3a4466; box-shadow: 0 12px 30px rgba(0,0,0,0.5); }
+.paper-card { background: rgba(0,0,0,0.2); }
+.split-group, .exam-big > div { background: #0e152b; border: 1px solid var(--border); }
+.hbar-track { background: #0b1124; }
+.ci-bar { background: color-mix(in srgb, var(--saffron) 45%, transparent); }
+.ci-dot { background: var(--marigold); border-color: #0c1328; }
+.quiz-opt:hover { background: rgba(244,166,58,0.08); }
+.rate { color: var(--marigold); border-color: var(--border); }
+.actions.sticky { background: linear-gradient(transparent, rgba(11,18,38,0.95) 40%); }
+.dag .node rect { fill: #1c2541; stroke: #4c5a80; }
+.dag .node.common rect { fill: rgba(0,0,0,0.3); stroke: #9097ab; }
+.dag .node.outcome rect { fill: #f5eedc; stroke: #f5eedc; }
+.dag .node.outcome text { fill: #141c33; }
+.classview .class-row { fill: rgba(0,0,0,0.3); }
+
+@media (prefers-reduced-motion: reduce) { .skyline .lit { animation: none; } }

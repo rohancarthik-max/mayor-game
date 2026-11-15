@@ -309,12 +309,12 @@
         var nodes = [{ id: 'hid', label: T.hidden + ' (hidden)', x: 320, y: 40, kind: 'common' },
           { id: 'drv', label: T.driver, x: 80, y: 175 },
           { id: 'out', label: T.outcome, x: 320, y: 310, kind: 'outcome' }];
-        var edges = [{ from: 'hid', to: 'drv' }, { from: 'hid', to: 'out', label: 'the real driver', at: 0.6, dx: -10, dy: 0, anchor: 'end' }];
+        var edges = [{ from: 'hid', to: 'drv' }, { from: 'hid', to: 'out' }];
         T.cands.forEach(function (c, j) {
-          nodes.push({ id: 'c' + j, label: c.name, x: xs[j], y: 175, kind: j === world.cause ? 'cause' : 'decoy' });
+          nodes.push({ id: 'c' + j, label: c.name + (j === world.cause ? ' (−' + Math.round(world.p.eff * 100) + '% when rolled out)' : ''), x: xs[j], y: 175, kind: j === world.cause ? 'cause' : 'decoy' });
           edges.push({ from: 'hid', to: 'c' + j });
-          if (j === world.cause) edges.push({ from: 'c' + j, to: 'out', strong: true, label: '−' + Math.round(world.p.eff * 100) + '% with the roll-out', at: 0.55, dx: 8, dy: 6, anchor: 'start' });
-          else edges.push({ from: 'c' + j, to: 'out', spurious: true, label: 'r = ' + f2(r[j]), at: 0.5, dx: 8, dy: 10, anchor: 'start' });
+          if (j === world.cause) edges.push({ from: 'c' + j, to: 'out', strong: true });
+          else edges.push({ from: 'c' + j, to: 'out', spurious: true, label: 'r = ' + f2(r[j]), at: 0.45, dx: xs[j] < 320 ? -8 : 8, dy: 4, anchor: xs[j] < 320 ? 'end' : 'start' });
         });
         return { nodes: nodes, edges: edges };
       },

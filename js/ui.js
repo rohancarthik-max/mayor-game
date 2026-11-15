@@ -54,6 +54,13 @@
     var spentPilots = state.pilots.reduce(function (a, p) { return a + p.cost; }, 0);
     return (L().shared ? termLeft() : L().model.budget) - spentPilots;
   }
+  function treasuryHTML() {
+    var total = L().shared ? M.TERM_BUDGET : L().model.budget, left = Math.max(0, budgetLeft());
+    var n = Math.round(total / 5), full = Math.round(left / 5), coins = '';
+    for (var i = 0; i < n; i++) coins += '<span class="tcoin' + (i < full ? '' : ' spent') + '" aria-hidden="true">₹</span>';
+    return '<div class="treasury"><div class="treasury-lbl"><span>Town treasury' + (L().shared ? ' (shared term budget)' : '') + ', one coin = ₹5 lakh</span>' +
+      '<span><b>' + lakh(left) + '</b> of ' + lakh(total) + ' left</span></div><div class="coins">' + coins + '</div></div>';
+  }
   function scoreBudget() { return L().shared ? L().partBudget : L().model.budget; }
   function varByKey(k) { return state.vars.filter(function (v) { return v.key === k; })[0]; }
   function varColor(key) {
@@ -102,8 +109,11 @@
   function worstWeek(m) { var tot = C.weekTotals(m); return tot.indexOf(S.max(tot)); }
 
   // ---------------------------------------------------------------- start
+  function setConcept(type) { if (type) document.body.setAttribute('data-concept', type); else document.body.removeAttribute('data-concept'); }
+
   function startScreen() {
     state = {};
+    setConcept(null);
     topbar();
     render(
       '<section class="hero card">' +
@@ -144,6 +154,7 @@
 
   // ---------------------------------------------------------------- quizzes (optional, before Level 1 and after Level 5)
   function quizScreen(which) {
+    setConcept(null);
     var set = M.quiz[which];
     state.level = null;
     topbar();
@@ -184,6 +195,7 @@
     var lv = M.levels[idx];
     state.levelIdx = idx;
     state.level = lv;
+    setConcept(lv.type);
     state.world = C.generateWithTrap(lv.model, state.seed + '-L' + lv.id);
     state.vars = lv.model.variables(state.world);
     state.toolsUsed = {}; state.flags = {}; state.choice = null; state.pilots = []; state.weeksUsed = 0;
@@ -246,7 +258,7 @@
     topbar();
     render(
       '<section class="card slim"><p class="eyebrow">' + levelLabel(lv) + ': ' + esc(lv.title) + '</p>' +
-        '<p class="goal-line">' + lv.goal + ' Money available: ' + lakh(budgetLeft()) + '.</p></section>' +
+        '<p class="goal-line">' + lv.goal + '</p>' + treasuryHTML() + '</section>' +
       '<div class="card slim">' + M.town.advisorHTML(lv.advisor.explore, 'neutral') + '</div>' +
       '<nav class="tabs" role="tablist">' + lv.tools.map(function (t) {
         return '<button role="tab" class="tab" data-tab="' + t + '">' + TAB_NAMES[t] + '</button>';
@@ -427,7 +439,12 @@
       });
       var r = S.pearson(xs, ys);
       if (state.sc.mode === 'ward') state.flags.wardavg = true;
-      panel.querySelector('#rbig').innerHTML = 'r = <b>' + signed(r, 2) + '</b> <span class="muted">(n = ' + fmt(xs.length) + ' dots)</span>';
+      var rr = isNaN(r) ? 0 : r, pos = 50 + 50 * rr;
+      panel.querySelector('#rbig').innerHTML = 'r = <b>' + signed(r, 2) + '</b> <span class="muted">(n = ' + fmt(xs.length) + ' dots)</span>' +
+        '<div class="ruler" aria-hidden="true"><span class="ruler-track"></span>' +
+        '<span class="ruler-fill' + (rr < 0 ? ' neg' : '') + '" style="left:' + Math.min(50, pos).toFixed(1) + '%;width:' + Math.abs(pos - 50).toFixed(1) + '%"></span>' +
+        '<span class="ruler-ticks"></span><span class="ruler-zero"></span><span class="ruler-pointer" style="left:' + pos.toFixed(1) + '%"></span></div>' +
+        '<div class="ruler-scale" aria-hidden="true"><span style="left:0">−1 opposite</span><span style="left:25%">−0.5</span><span style="left:50%">0 no link</span><span style="left:75%">+0.5</span><span style="left:100%">+1 move together</span></div>';
       CH.scatter(panel.querySelector('#sc'), { points: pts, xLabel: vx.label, yLabel: vy.label, xUnit: vx.unit, yUnit: vy.unit,
         xdp: vx.dp, ydp: vy.dp, color: 'var(--s1)', small: state.sc.mode === 'ward' });
       panel.querySelector('#ylab').textContent = vy.label;
@@ -627,7 +644,7 @@
     topbar();
     render(
       '<section class="card"><p class="eyebrow">' + levelLabel(lv) + ': policy desk</p><h1>Fund one policy</h1>' +
-      '<p>' + lv.goal + ' Money available: <b>' + lakh(avail) + '</b>' + (lv.shared ? ' (shared term budget)' : '') + '. Any money you don\'t spend adds to your score.</p>' +
+      '<p>' + lv.goal + ' Any money you don\'t spend adds to your score.</p>' + treasuryHTML() +
       (state.pilots.length ? '<p>Season weeks left after your pilot' + (state.pilots.length > 1 ? 's' : '') + ': <b>' + (H - state.weeksUsed) + ' of ' + H + '</b>. Your roll-out starts in week ' + (state.weeksUsed + 1) + '.</p>' : '') +
       M.town.advisorHTML(lv.advisor.desk, 'neutral') + '</section>' +
       (state.pilots.length ? '<section class="card"><h2>Your pilot results</h2>' + state.pilots.map(pilotSummaryHTML).join('') + '</section>' : '') +
@@ -896,6 +913,7 @@
 
   // ---------------------------------------------------------------- feedback form
   function feedbackScreen() {
+    setConcept(null);
     state.level = null;
     topbar();
     render(
@@ -919,6 +937,7 @@
 
   // ---------------------------------------------------------------- report card
   function reportScreen() {
+    setConcept(null);
     M.log.event('report_view', { total: totalScore() });
     state.level = null;
     topbar();
