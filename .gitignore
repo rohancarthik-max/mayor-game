@@ -1,0 +1,9 @@
+CLAUDE.md
+.claude/
+__pycache__/
+# LaTeX build files
+report/*.aux
+report/*.log
+report/*.out
+# course rubric image (not our work)
+partB_rubric.png
