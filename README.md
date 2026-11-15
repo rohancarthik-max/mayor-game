@@ -4,6 +4,8 @@
 You are the new mayor of Navapuram, a small Indian town. Each level gives you a problem, a budget and
 a dashboard of town data. The data always points somewhere. Your job is to work out whether it points at the **cause**.
 
+**▶ Play it here: <https://rohancarthik-max.github.io/mayor-game/>** (works on a laptop or phone, no install).
+
 CS3006 Introduction to Data Science, Part B (learning game). **Report:** [`report/CS3006_MayorForAYear_Report.pdf`](report/CS3006_MayorForAYear_Report.pdf).
 
 ![The living town: mosquitoes, rain, carts and complaints, all driven by simulated data](docs/screenshots/01_town.jpg)
@@ -92,7 +94,7 @@ Over 200 test worlds the estimate is unbiased and the interval contains the true
 - **Double-click `index.html`.** It runs offline in any modern browser, with no install, build step or internet.
   (It uses plain `<script>` files, not ES modules, because browsers block modules on `file://`.)
 - Or serve the folder: `python -m http.server 8000` and open <http://localhost:8000>.
-- It also works on GitHub Pages as-is.
+- Online: <https://rohancarthik-max.github.io/mayor-game/> (GitHub Pages, served straight from this repo).
 
 ## How to run the tests
 
