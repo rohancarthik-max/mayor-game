@@ -113,7 +113,9 @@ worlds, 2,400 zero-effect checks, pilot bias and confidence-interval coverage), 
 
 ## Playtest results
 
-*To be filled in after playtesting* (protocol in [`docs/playtest/`](docs/playtest/README.md)).
+Peer playtest sessions were not run within the project timeline. Everything needed for them is built and tested:
+the in-game warm-up and check-out quiz, decision logging, the feedback form, the protocol in
+[`docs/playtest/`](docs/playtest/README.md) and the summary script below.
 
 Every player's downloaded log goes in `docs/playtest/logs/`, then:
 
